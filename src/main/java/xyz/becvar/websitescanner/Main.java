@@ -15,7 +15,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Print ans fro get target url
+        siteScanner.scan("https://web.becvar.xyz/");
+
+ /*       //Print ans fro get target url
         System.out.print("Please type target url: ");
 
         //Save target url to string
@@ -34,6 +36,6 @@ public class Main {
                 //Set main scan phase
                 siteScanner.scan(targetURL);
             }
-        }
+        }*/
     }
 }
