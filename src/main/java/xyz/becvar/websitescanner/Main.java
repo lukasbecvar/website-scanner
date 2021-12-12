@@ -1,6 +1,8 @@
 package xyz.becvar.websitescanner;
 
 import xyz.becvar.websitescanner.utils.SystemUtil;
+import xyz.becvar.websitescanner.utils.console.ConsoleUtils;
+
 import java.util.Scanner;
 
 public class Main {
@@ -12,8 +14,12 @@ public class Main {
     public static Validator validator = new Validator();
     public static SiteScanner siteScanner = new SiteScanner();
     public static Scanner scanner = new Scanner(System.in);
+    public static ConsoleUtils consoleUtils = new ConsoleUtils();
 
     public static void main(String[] args) {
+
+        //Clear console after start
+        consoleUtils.clearConsole();
 
         siteScanner.scan("https://web.becvar.xyz/");
 
