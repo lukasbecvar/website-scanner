@@ -12,13 +12,7 @@ public class Getter {
         try {
             InetAddress ip = InetAddress.getByName(new URL(url).getHost());
 
-            //Remove protocol form url
-            url = url.replace("https://", "").replace("http://", "");
-
-            //Remove last char /
-            if (url.endsWith("/")) {
-                url = url.substring(0, url.length() - 1);
-            }
+            url = Main.validator.urlStrip(url);
 
             return ip.toString().replace(url + "/", "");
         } catch (UnknownHostException | MalformedURLException e) {
