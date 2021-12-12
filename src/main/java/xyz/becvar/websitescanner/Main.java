@@ -21,7 +21,7 @@ public class Main {
         //Clear console after start
         consoleUtils.clearConsole();
 
-        siteScanner.scan("https://web.becvar.xyz/");
+        siteScanner.scan("https://iselink.eu");
 
  /*       //Print ans fro get target url
         System.out.print("Please type target url: ");

@@ -17,10 +17,19 @@ public class Validator {
         url = url.replace("https://", "").replace("http://", "");
 
         //Remove last char /
-        if (url.endsWith("/")) {
-            url = url.substring(0, url.length() - 1);
-        }
+        url = removeLastSlash(url);
 
         return url;
+    }
+
+
+    //Function for remove last /
+    public String removeLastSlash(String url) {
+        //Remove last char /
+        if (url.endsWith("/")) {
+            return url.substring(0, url.length() - 1);
+        } else {
+            return url;
+        }
     }
 }

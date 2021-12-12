@@ -32,4 +32,14 @@ public class FileUtils {
             fileOBJ.delete();
         }
     }
+
+    //Check if file exist
+    public boolean ifFileExist(String name) {
+        File fileOBJ = new File(name);
+        if (fileOBJ.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

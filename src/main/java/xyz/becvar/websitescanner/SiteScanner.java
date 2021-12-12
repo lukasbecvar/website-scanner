@@ -1,15 +1,21 @@
 package xyz.becvar.websitescanner;
 
 import xyz.becvar.websitescanner.utils.FileUtils;
+import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.TimeUtils;
 import xyz.becvar.websitescanner.utils.console.Logger;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class SiteScanner {
 
     //Init main used objects
-    public static Getter getter = new Getter();
-    public static Validator validator = new Validator();
-    public static FileUtils fileUtils = new FileUtils();
+    public Getter getter = new Getter();
+    public Validator validator = new Validator();
+    public FileUtils fileUtils = new FileUtils();
 
     public void scan(String url) {
         //Delete old log if exist
@@ -20,6 +26,9 @@ public class SiteScanner {
 
         //Print real ip and save to log file
         realIPScan(url);
+
+        //File system scan
+        fileSystemScan(url);
     }
 
 
@@ -33,5 +42,41 @@ public class SiteScanner {
 
         //Save real ip to log file
         fileUtils.saveMessageLog("REAL IP: " + realIP, validator.urlStrip(url) + ".log");
+    }
+
+
+    //Scan page file system
+    public void fileSystemScan(String url) {
+
+        url = validator.removeLastSlash(url);
+
+        //Save to log file
+        fileUtils.saveMessageLog("\n\n\nFiles and directoryes found on " + url + "\n", validator.urlStrip(url) + ".log");
+
+        if (fileUtils.ifFileExist("word.list")) {
+            try (BufferedReader br = new BufferedReader(new FileReader("word.list"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    try {
+                        HttpURLConnection.setFollowRedirects(false);
+                        HttpURLConnection con = (HttpURLConnection) new URL(url + "/" + line).openConnection();
+                        con.setRequestMethod("HEAD");
+                        Logger.log(url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+
+                        //Save to log file if response code not 404
+                        if (con.getResponseCode() != 404) {
+                            fileUtils.saveMessageLog(url + "/" + line, validator.urlStrip(url) + ".log");
+                        }
+                    }
+                    catch (Exception e) {
+                        SystemUtil.kill(e.getMessage());
+                    }
+                }
+            } catch (IOException e) {
+                SystemUtil.kill(e.getMessage());
+            }
+        } else {
+            SystemUtil.kill("error word.list not found, please check your file or try reinstall this app");
+        }
     }
 }
