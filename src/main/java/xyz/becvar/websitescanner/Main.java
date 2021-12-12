@@ -2,7 +2,6 @@ package xyz.becvar.websitescanner;
 
 import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.console.ConsoleUtils;
-
 import java.util.Scanner;
 
 public class Main {
@@ -21,9 +20,7 @@ public class Main {
         //Clear console after start
         consoleUtils.clearConsole();
 
-        siteScanner.scan("https://iselink.eu");
-
- /*       //Print ans fro get target url
+        //Print ans fro get target url
         System.out.print("Please type target url: ");
 
         //Save target url to string
@@ -42,6 +39,6 @@ public class Main {
                 //Set main scan phase
                 siteScanner.scan(targetURL);
             }
-        }*/
+        }
     }
 }
