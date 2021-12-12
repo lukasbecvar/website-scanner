@@ -8,7 +8,7 @@
         <build.version>1.0.0</build.version>
         <build.package>xyz.becvar.websitescanner</build.package>
         <build.main>xyz.becvar.websitescanner.Main</build.main>
-        <build.java.version>11</build.java.version>
+        <build.java.version>17</build.java.version>
     </properties>
 
     <groupId>xyz.becvar.websitescanner</groupId>

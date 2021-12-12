@@ -48,6 +48,9 @@ public class SiteScanner {
     //Scan page file system
     public void fileSystemScan(String url) {
 
+        int file = 1;
+        int foundFiles = 1;
+
         url = validator.removeLastSlash(url);
 
         //Save to log file
@@ -61,11 +64,12 @@ public class SiteScanner {
                         HttpURLConnection.setFollowRedirects(false);
                         HttpURLConnection con = (HttpURLConnection) new URL(url + "/" + line).openConnection();
                         con.setRequestMethod("HEAD");
-                        Logger.log(url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
-
+                        Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                        file++;
                         //Save to log file if response code not 404
-                        if (con.getResponseCode() != 404) {
-                            fileUtils.saveMessageLog(url + "/" + line, validator.urlStrip(url) + ".log");
+                        if (con.getResponseCode() != 404 && con.getResponseCode() != 400) {
+                            foundFiles++;
+                            fileUtils.saveMessageLog(url + "/" + line + " - " + new String(String.valueOf(con.getResponseCode())), validator.urlStrip(url) + ".log");
                         }
                     }
                     catch (Exception e) {
@@ -75,6 +79,7 @@ public class SiteScanner {
             } catch (IOException e) {
                 SystemUtil.kill(e.getMessage());
             }
+            Logger.log("Scanner exited with " + foundFiles + " found files.");
         } else {
             SystemUtil.kill("error word.list not found, please check your file or try reinstall this app");
         }
