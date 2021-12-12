@@ -4,7 +4,8 @@ import xyz.becvar.websitescanner.Main;
 
 public class Logger {
 
-    public static String Prefix = ConsoleColors.ANSI_RED + "[" + ConsoleColors.ANSI_BLUE + Main.APP_NAME + ConsoleColors.ANSI_RED + "]" + ConsoleColors.ANSI_YELLOW + ": " + ConsoleColors.ANSI_GREEN;
+    //Main app prefix string
+    public static String Prefix = ConsoleColors.CODES.ANSI_RED + "[" + ConsoleColors.CODES.ANSI_BLUE + Main.APP_NAME + ConsoleColors.CODES.ANSI_RED + "]" + ConsoleColors.CODES.ANSI_YELLOW + ": " + ConsoleColors.CODES.ANSI_GREEN;
 
     public static void log(String msg) {
         System.out.println(Prefix + msg);
