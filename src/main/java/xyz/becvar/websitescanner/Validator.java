@@ -1,5 +1,13 @@
 package xyz.becvar.websitescanner;
 
+import xyz.becvar.websitescanner.utils.console.Logger;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class Validator {
 
     //Function for check if url is valid adress
@@ -30,6 +38,24 @@ public class Validator {
             return url.substring(0, url.length() - 1);
         } else {
             return url;
+        }
+    }
+
+    //Check if site is https
+    public boolean isHttpOrHttpsUrl(String url) {
+
+        try {
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
+            con.setRequestMethod("HEAD");
+
+            con.connect();
+
+            return true;
+        }
+        catch (Exception e) {
+            return false;
         }
     }
 }

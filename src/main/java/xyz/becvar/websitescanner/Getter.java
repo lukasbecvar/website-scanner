@@ -1,5 +1,7 @@
 package xyz.becvar.websitescanner;
 
+import xyz.becvar.websitescanner.utils.console.Logger;
+
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,8 +17,9 @@ public class Getter {
             url = Main.validator.urlStrip(url);
 
             return ip.toString().replace(url + "/", "");
+
         } catch (UnknownHostException | MalformedURLException e) {
-            e.printStackTrace();
+            Logger.log("website: " + url + " is offline");
         }
         return null;
     }

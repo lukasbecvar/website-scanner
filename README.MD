@@ -1,5 +1,7 @@
 # Java Website scanner
-	
+Web directory scanner
+You can scan individual domains or site lists
+
 ## Dependencies
 This project requires Java 17.
 * junit 
