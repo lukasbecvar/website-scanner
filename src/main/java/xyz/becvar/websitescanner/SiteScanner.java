@@ -73,7 +73,7 @@ public class SiteScanner {
                         Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
                         file++;
                         //Save to log file if response code not 404, 403, 400
-                        if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403) {
+                        if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301) {
                             foundFiles++;
                             fileUtils.saveMessageLog(url + "/" + line + " - " + new String(String.valueOf(con.getResponseCode())), "scanned_logs/" + validator.urlStrip(url) + ".log");
                         }
