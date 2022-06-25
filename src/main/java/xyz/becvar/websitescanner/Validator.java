@@ -1,7 +1,6 @@
 package xyz.becvar.websitescanner;
 
 import xyz.becvar.websitescanner.utils.console.Logger;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.HttpURLConnection;

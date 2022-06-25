@@ -73,8 +73,10 @@ public class SiteScanner {
 
                         if (con.getResponseCode() != 404) {
                             Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                        } else if (con.getResponseCode() != 301) {
+                            Logger.log(ConsoleColors.CODES.ANSI_YELLOW + file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
                         } else {
-                            Logger.log(ConsoleColors.CODES.ANSI_RED + file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                            Logger.log(ConsoleColors.CODES.ANSI_YELLOW + file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
                         }
                         file++;
                         //Save to log file if response code not 404, 403, 400

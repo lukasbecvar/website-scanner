@@ -4,7 +4,6 @@ import xyz.becvar.websitescanner.utils.FileUtils;
 import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.console.ConsoleUtils;
 import xyz.becvar.websitescanner.utils.console.Logger;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
