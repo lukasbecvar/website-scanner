@@ -3,6 +3,7 @@ package xyz.becvar.websitescanner;
 import xyz.becvar.websitescanner.utils.FileUtils;
 import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.TimeUtils;
+import xyz.becvar.websitescanner.utils.console.ConsoleColors;
 import xyz.becvar.websitescanner.utils.console.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -70,7 +71,11 @@ public class SiteScanner {
 
                         con.connect();
 
-                        Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                        if (con.getResponseCode() != 404) {
+                            Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                        } else {
+                            Logger.log(ConsoleColors.CODES.ANSI_RED + file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
+                        }
                         file++;
                         //Save to log file if response code not 404, 403, 400
                         if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301) {

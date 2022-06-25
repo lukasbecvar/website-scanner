@@ -65,14 +65,16 @@ public class Main {
 
                         //Scanning
 
+                        String lineContentToScan;
+
                         if (validator.isHttpOrHttpsUrl("https://" + lineContent)) {
-                            lineContent = "https://" + lineContent;
+                            lineContentToScan = "https://" + lineContent;
                         } else {
-                            lineContent = "http://" + lineContent;
+                            lineContentToScan = "http://" + lineContent;
                         }
 
-                        if (getter.getIP(lineContent) != null) {
-                            siteScanner.scan(lineContent);
+                        if (getter.getIP(lineContentToScan) != null) {
+                            siteScanner.scan(lineContentToScan);
                         }
 
                         //End of scanning functions
