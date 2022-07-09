@@ -104,7 +104,7 @@ public class SiteScanner {
 
 
                         //Save to log file if response code not 404, 403, 400
-                        if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301 && con.getResponseCode() != 302 && con.getResponseCode() != 308 && con.getResponseCode() != 301 && con.getResponseCode() != 509 && con.getResponseCode() != 429 && con.getResponseCode() != 500) {
+                        if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301 && con.getResponseCode() != 302 && con.getResponseCode() != 308 && con.getResponseCode() != 301 && con.getResponseCode() != 429) {
                             foundFiles++;
                             fileUtils.saveMessageLog(url + "/" + line + " - " + new String(String.valueOf(con.getResponseCode())), "scanned_logs/" + validator.urlStrip(url) + ".log");
                         }
