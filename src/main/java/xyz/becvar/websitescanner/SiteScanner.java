@@ -117,8 +117,9 @@ public class SiteScanner {
                 Logger.log(e.getMessage());
             }
             Logger.log("Scanner: exited with " + foundFiles + " found files.");
-            if (foundFiles < 3000) {
+            if (foundFiles > 3000) {
                 Logger.log("Scanner: the scanned data will not be saved.");
+                fileUtils.deleteFile("scanned_logs/" + validator.urlStrip(url) + ".log");
             } else {
                 Logger.log("Scanner: the scanned data saved to scanned_logs/" + "scanned_logs/" + validator.urlStrip(url) + ".log");
             }
