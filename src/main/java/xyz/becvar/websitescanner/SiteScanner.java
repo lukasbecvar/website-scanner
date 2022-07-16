@@ -117,7 +117,11 @@ public class SiteScanner {
                 Logger.log(e.getMessage());
             }
             Logger.log("Scanner: exited with " + foundFiles + " found files.");
-            Logger.log("Scanner: all scanned data saved to scanned_logs/" + "scanned_logs/" + validator.urlStrip(url) + ".log");
+            if (foundFiles < 5000) {
+                Logger.log("Scanner: the scanned data will not be saved.");
+            } else {
+                Logger.log("Scanner: the scanned data saved to scanned_logs/" + "scanned_logs/" + validator.urlStrip(url) + ".log");
+            }
         } else {
             SystemUtil.kill("error word.list not found, please check your file or try reinstall this app");
         }
