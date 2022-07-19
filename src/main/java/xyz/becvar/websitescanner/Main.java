@@ -10,7 +10,8 @@ import java.util.Scanner;
 public class Main {
 
     //Define basic vars
-    public static final String APP_NAME = "WS";
+    public static final String APP_NAME = "WS"; //APP prefix in log
+    public static int MAX_FOUND = 3000; //Maximal found for fake code protection
 
     //Init main objects
     public static Validator validator = new Validator();
@@ -19,6 +20,7 @@ public class Main {
     public static ConsoleUtils consoleUtils = new ConsoleUtils();
     public static FileUtils fileUtils = new FileUtils();
     public static Getter getter = new Getter();
+    public static String useSiteList;
 
     public static void main(String[] args) {
 
@@ -32,7 +34,7 @@ public class Main {
         System.out.print("Do you want to use site list scan? [YES/NO]: ");
 
         //save list use ans
-        String useSiteList = scanner.nextLine();
+        useSiteList = scanner.nextLine();
 
         //Check if site list usage enabled
         if (useSiteList.equalsIgnoreCase("yes") || useSiteList.isEmpty()) {

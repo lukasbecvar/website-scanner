@@ -44,6 +44,8 @@ public class Validator {
             HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
             con.setRequestMethod("HEAD");
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
 
             con.connect();
 
