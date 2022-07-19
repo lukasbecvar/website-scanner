@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 
 public class Getter {
 
-    //Function for get real website ip
+    //Gget real website ip or proxy server adress
     public String getIP(String url) {
         try {
             InetAddress ip = InetAddress.getByName(new URL(url).getHost());

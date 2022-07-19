@@ -5,16 +5,12 @@ import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.console.ConsoleUtils;
 import xyz.becvar.websitescanner.utils.console.Logger;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
     //Define basic vars
-    public static final String APP_NAME = "WebsiteScanner";
+    public static final String APP_NAME = "WS";
 
     //Init main objects
     public static Validator validator = new Validator();
@@ -38,8 +34,10 @@ public class Main {
         //save list use ans
         String useSiteList = scanner.nextLine();
 
+        //Check if site list usage enabled
         if (useSiteList.equalsIgnoreCase("yes") || useSiteList.isEmpty()) {
 
+            //Check if site.list exist
             if (!fileUtils.ifFileExist("site.list")) {
                 SystemUtil.kill("Error: site.list not exist please create site.list and put inside url list");
             } else {
@@ -50,36 +48,43 @@ public class Main {
                 //save list use ans
                 String deleteafterscan = scanner.nextLine();
 
-                if (!deleteafterscan.equalsIgnoreCase("yes")) {
+                //Check if delete scanned sites enabled
+                if (!deleteafterscan.equalsIgnoreCase("yes") && !deleteafterscan.isEmpty()) {
                     Logger.log("Autoremove: -> no, urls will not be deleted after scanning");
                 }
 
                 //Try read site list file
                 try (BufferedReader br = new BufferedReader(new FileReader("site.list"))) {
 
+                    //Define string for site names
                     String lineContent;
 
                     //Start scanning for individual sites
                     while ((lineContent = br.readLine()) != null) {
 
                         //Scanning
-
                         String lineContentToScan;
 
+                        //Remove protocol from sites
+                        if (lineContent.startsWith("http")) {
+                            lineContent = lineContent.replace("https://", "");
+                            lineContent = lineContent.replace("http://", "");
+                        }
+
+                        //Check if site running on https or http
                         if (validator.isHttpOrHttpsUrl("https://" + lineContent)) {
                             lineContentToScan = "https://" + lineContent;
                         } else {
                             lineContentToScan = "http://" + lineContent;
                         }
 
+                        //Check if site is not null
                         if (getter.getIP(lineContentToScan) != null) {
                             siteScanner.scan(lineContentToScan);
                         }
 
-                        //End of scanning functions
-
                         //Remove url from list after scan (if enabled)
-                        if (deleteafterscan.equalsIgnoreCase("yes")) {
+                        if (deleteafterscan.equalsIgnoreCase("yes") || deleteafterscan.isEmpty()) {
                             fileUtils.removeLineFromFile("site.list", lineContent);
                         }
                     }
@@ -87,7 +92,6 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
-
         } else {
 
             //Print ans fro get target url
@@ -103,14 +107,13 @@ public class Main {
 
                 //Check if url is valid
                 if (!validator.isURL(targetURL)) {
-                    SystemUtil.kill("error target url is invalid! [https://www.example.com]");
+                    SystemUtil.kill("error target url is invalid! [https://example.com]");
                 } else {
 
                     //Set main scan phase
                     siteScanner.scan(targetURL);
                 }
             }
-
         }
     }
 }

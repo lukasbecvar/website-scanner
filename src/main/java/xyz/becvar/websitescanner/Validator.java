@@ -1,11 +1,7 @@
 package xyz.becvar.websitescanner;
 
-import xyz.becvar.websitescanner.utils.console.Logger;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class Validator {
 

@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 
 public class FileUtils {
 
+    //Create directory for log files
     public void createLogDir() {
         try {
             Files.createDirectories(Paths.get("scanned_logs/"));
@@ -24,7 +25,6 @@ public class FileUtils {
             try(PrintWriter output = new PrintWriter(new FileWriter(file,true))) {
                 output.printf("%s\r\n",line);
             }
-            catch (Exception e) {}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,9 +50,7 @@ public class FileUtils {
 
     //Remove line from file
     public void removeLineFromFile(String file, String lineToRemove) {
-
         try {
-
             File inFile = new File(file);
 
             if (!inFile.isFile()) {
@@ -88,8 +86,9 @@ public class FileUtils {
             }
 
             //Rename the new file to the filename the original file had.
-            if (!tempFile.renameTo(inFile))
+            if (!tempFile.renameTo(inFile)) {
                 System.out.println("Could not rename file");
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -3,11 +3,6 @@ package xyz.becvar.websitescanner.utils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/*
- * The time utils
- * Get actual time
- */
-
 public class TimeUtils {
 
     //Get actual time in string
