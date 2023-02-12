@@ -9,7 +9,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Map;
 
 public class SiteScanner {
 
@@ -33,6 +37,8 @@ public class SiteScanner {
         //Print real ip and save to log file
         realIPScan(url);
 
+        getServer(url);
+
         //Save to log file
         fileUtils.saveMessageLog("\n\nFound dirs & subdomains " + url, "scanned_logs/" + validator.urlStrip(url) + ".log");
 
@@ -48,7 +54,6 @@ public class SiteScanner {
         finalSave(url);
     }
 
-
     //Get real site ip by url
     public void realIPScan(String url) {
         //Get real site ip
@@ -59,6 +64,31 @@ public class SiteScanner {
 
         //Save real ip to log file
         fileUtils.saveMessageLog("REAL IP: " + realIP, "scanned_logs/" + validator.urlStrip(url) + ".log");
+    }
+
+    public void getServer(String url) {
+
+        URL obj = null;
+        try {
+            obj = new URL(url);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        URLConnection conn = null;
+        try {
+            conn = obj.openConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //get header by 'key'
+        String server = conn.getHeaderField("Server");
+
+        //Print real ip to console
+        Logger.log("Server running on " + url + "is: " + server);
+
+        //Save real ip to log file
+        fileUtils.saveMessageLog("SERVER: " + server, "scanned_logs/" + validator.urlStrip(url) + ".log");
     }
 
     //Scan page file system
