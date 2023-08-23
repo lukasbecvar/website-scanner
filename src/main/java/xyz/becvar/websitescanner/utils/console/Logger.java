@@ -11,4 +11,9 @@ public class Logger {
     public static void log(String msg) {
         System.out.println(Prefix + msg);
     }
+
+    // log console prompt
+    public static void logPrompt(String prompt) {
+        System.out.print(ConsoleColors.CODES.ANSI_CYAN + prompt);
+    }
 }

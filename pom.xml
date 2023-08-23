@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <build.version>4.0.0</build.version>
+        <build.version>5.0.0</build.version>
         <build.package>xyz.becvar.websitescanner</build.package>
         <build.main>xyz.becvar.websitescanner.Main</build.main>
         <build.java.version>17</build.java.version>
@@ -13,7 +13,7 @@
 
     <groupId>xyz.becvar.websitescanner</groupId>
     <artifactId>WebsiteScanner</artifactId>
-    <version>4.0.0</version>
+    <version>5.0.0</version>
     <packaging>jar</packaging>
 
     <build>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

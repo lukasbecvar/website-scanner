@@ -1,6 +1,7 @@
 package xyz.becvar.websitescanner;
 
 import xyz.becvar.websitescanner.utils.FileUtils;
+import xyz.becvar.websitescanner.utils.ResourcesUtils;
 import xyz.becvar.websitescanner.utils.SystemUtil;
 import xyz.becvar.websitescanner.utils.console.ConsoleUtils;
 import xyz.becvar.websitescanner.utils.console.Logger;
@@ -12,6 +13,7 @@ public class Main {
     // define basic vars
     public static final String APP_NAME = "WS"; // APP prefix in log
     public static int MAX_FOUND = 3000; // maximal found for fake code protection
+    public static int MAX_TIMEOUT = 2; // maximal site timeout in seconds
 
     // init main objects
     public static Validator validator = new Validator();
@@ -30,8 +32,18 @@ public class Main {
         // clear console after start
         consoleUtils.clearConsole();
 
+        // create directory list if not exist
+        if (!fileUtils.ifFileExist("directory.list")) {
+            ResourcesUtils.copyResource(Main.class.getClassLoader().getResourceAsStream("directory.list"), "directory.list");
+        }
+
+        // create subdomain list if not exist
+        if (!fileUtils.ifFileExist("subdomain.list")) {
+            ResourcesUtils.copyResource(Main.class.getClassLoader().getResourceAsStream("subdomain.list"), "subdomain.list");
+        }
+
         // print ans for get yes or no (site wordlist scanning)
-        System.out.print("Do you want to use site list scan? [YES/NO]: ");
+        Logger.logPrompt("Do you want to use site list scan? [YES/NO]: ");
 
         // save list use ans
         useSiteList = scanner.nextLine();
@@ -39,13 +51,18 @@ public class Main {
         // check if site list usage enabled
         if (useSiteList.equalsIgnoreCase("yes") || useSiteList.isEmpty()) {
 
+            // create site list if not exist
+            if (!fileUtils.ifFileExist("site.list")) {
+                ResourcesUtils.copyResource(Main.class.getClassLoader().getResourceAsStream("site.list"), "site.list");
+            }
+
             // check if site.list exist
             if (!fileUtils.ifFileExist("site.list")) {
                 SystemUtil.kill("Error: site.list not exist please create site.list and put inside url list");
             } else {
 
                 // print ans for get yes or no (delete url from list after scan)
-                System.out.print("Do you want to remove the url from the sheet after scanning? [YES/NO]: ");
+                Logger.logPrompt("Do you want to remove the url from the list after scanning? [YES/NO]: ");
 
                 // save list use ans
                 String deleteafterscan = scanner.nextLine();
@@ -97,7 +114,7 @@ public class Main {
         } else {
 
             // print ans fro get target url
-            System.out.print("Please type target url: ");
+            Logger.logPrompt("Please type target url: ");
 
             // save target url to string
             String targetURL = scanner.nextLine();

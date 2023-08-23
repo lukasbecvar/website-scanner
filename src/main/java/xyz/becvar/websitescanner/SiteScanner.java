@@ -12,8 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-import java.util.Map;
 
 public class SiteScanner {
 
@@ -115,13 +113,14 @@ public class SiteScanner {
 
                         // set User-agent
                         //con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
-                        con.setRequestProperty("User-Agent", "https://becvold.xyz site scanner bot");
+                        con.setRequestProperty("User-Agent", "https://becvar.xyz site scanner bot");
 
                         // set connection method
-                        con.setRequestMethod("HEAD");
+                        con.setRequestMethod("GET");
 
                         // set maximal connection timetou 5000 = 5 second
-                        con.setConnectTimeout(5000);
+                        con.setConnectTimeout(Main.MAX_TIMEOUT * 1000);
+                        con.setReadTimeout(Main.MAX_TIMEOUT * 1000);
 
                         // connect to define connection
                         con.connect();
@@ -208,13 +207,14 @@ public class SiteScanner {
 
                         // set User-agent
                         //con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
-                        con.setRequestProperty("User-Agent", "https://becvold.xyz site scanner bot");
+                        con.setRequestProperty("User-Agent", "https://becvar.xyz site scanner bot");
 
                         // set request method
-                        con.setRequestMethod("HEAD");
+                        con.setRequestMethod("GET");
 
                         // set maximal connection timetou 2000 = 2 seconds
-                        con.setConnectTimeout(2000);
+                        con.setConnectTimeout(Main.MAX_TIMEOUT * 1000);
+                        con.setReadTimeout(Main.MAX_TIMEOUT * 1000);
 
                         // connect to connection define
                         con.connect();

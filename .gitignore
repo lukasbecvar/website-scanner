@@ -1,3 +1,7 @@
 .idea
 target/
 *.log
+/directory.list
+/site.list
+/subdomain.list
+/scanned_logs/*
