@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 public class FileUtils {
 
-    //Create directory for log files
+    // create directory for log files
     public void createLogDir() {
         try {
             Files.createDirectories(Paths.get("scanned_logs/"));
@@ -15,7 +15,7 @@ public class FileUtils {
         }
     }
 
-    //Write to file
+    // write to file
     public void saveMessageLog(String line, String file) {
         try {
             if (Files.notExists(Paths.get(file))) {
@@ -30,7 +30,7 @@ public class FileUtils {
         }
     }
 
-    //Delete file
+    // delete file
     public void deleteFile(String name) {
         File fileOBJ = new File(name);
         if (fileOBJ.exists()) {
@@ -38,7 +38,7 @@ public class FileUtils {
         }
     }
 
-    //Check if file exist
+    // check if file exist
     public boolean ifFileExist(String name) {
         File fileOBJ = new File(name);
         if (fileOBJ.exists()) {
@@ -48,7 +48,7 @@ public class FileUtils {
         }
     }
 
-    //Remove line from file
+    // remove line from file
     public void removeLineFromFile(String file, String lineToRemove) {
         try {
             File inFile = new File(file);
@@ -58,7 +58,7 @@ public class FileUtils {
                 return;
             }
 
-            //Construct the new file that will later be renamed to the original filename.
+            // construct the new file that will later be renamed to the original filename.
             File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
 
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -66,8 +66,8 @@ public class FileUtils {
 
             String line = null;
 
-            //Read from the original file and write to the new
-            //unless content matches data to be removed.
+            // read from the original file and write to the new
+            // unless content matches data to be removed.
             while ((line = br.readLine()) != null) {
 
                 if (!line.trim().equals(lineToRemove)) {
@@ -79,13 +79,13 @@ public class FileUtils {
             pw.close();
             br.close();
 
-            //Delete the original file
+            // delete the original file
             if (!inFile.delete()) {
                 System.out.println("Could not delete file");
                 return;
             }
 
-            //Rename the new file to the filename the original file had.
+            // rename the new file to the filename the original file had.
             if (!tempFile.renameTo(inFile)) {
                 System.out.println("Could not rename file");
             }

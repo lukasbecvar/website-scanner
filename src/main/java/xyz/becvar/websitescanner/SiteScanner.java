@@ -17,52 +17,53 @@ import java.util.Map;
 
 public class SiteScanner {
 
-    //Init main used objects
+    // init main used objects
     public Getter getter = new Getter();
     public Validator validator = new Validator();
     public FileUtils fileUtils = new FileUtils();
 
-    //Found res
+    // found res
     public int foundDirs = 0;
     public int foundSubs = 0;
 
-    //Main init functions
+    // main init functions
     public void scan(String url) {
-        //Delete old log if exist
+        // felete old log if exist
         fileUtils.deleteFile("scanned_logs/" + validator.urlStrip(url) + ".log");
 
-        //Create new log file and write title
+        // create new log file and write title
         fileUtils.saveMessageLog("Information log: " + url + " : " + TimeUtils.getTime() + "\n", "scanned_logs/" + validator.urlStrip(url) + ".log");
 
-        //Print real ip and save to log file
+        // print real ip and save to log file
         realIPScan(url);
 
+        // get web server name
         getServer(url);
 
-        //Save to log file
+        // save to log file
         fileUtils.saveMessageLog("\n\nFound dirs & subdomains " + url, "scanned_logs/" + validator.urlStrip(url) + ".log");
 
-        //File system scan
+        // file system scan
         fileSystemScan(url);
 
-        //Subdomain scan
+        // subdomain scan
         if (foundDirs < Main.MAX_FOUND) {
             subdomainScan(url);
         }
 
-        //Final save scanned data
+        // final save scanned data
         finalSave(url);
     }
 
-    //Get real site ip by url
+    // get real site ip by url
     public void realIPScan(String url) {
-        //Get real site ip
+        // get real site ip
         String realIP = getter.getIP(url);
 
-        //Print real ip to console
+        // print real ip to console
         Logger.log("Real ip of " + url + " is: " + realIP);
 
-        //Save real ip to log file
+        // save real ip to log file
         fileUtils.saveMessageLog("REAL IP: " + realIP, "scanned_logs/" + validator.urlStrip(url) + ".log");
     }
 
@@ -81,51 +82,51 @@ public class SiteScanner {
             throw new RuntimeException(e);
         }
 
-        //get header by 'key'
+        // get header by 'key'
         String server = conn.getHeaderField("Server");
 
-        //Print real ip to console
+        // print real ip to console
         Logger.log("Server running on " + url + "is: " + server);
 
-        //Save real ip to log file
+        // save real ip to log file
         fileUtils.saveMessageLog("SERVER: " + server, "scanned_logs/" + validator.urlStrip(url) + ".log");
     }
 
-    //Scan page file system
+    // scan page file system
     public void fileSystemScan(String url) {
 
         int file = 1;
 
-        //Get url and remmove /
+        // gGet url and remmove /
         url = validator.removeLastSlash(url);
 
-        //Check if directory.list file exist
+        // check if directory.list file exist
         if (fileUtils.ifFileExist("directory.list")) {
             try (BufferedReader br = new BufferedReader(new FileReader("directory.list"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     try {
 
-                        //Disable redirect scan
+                        // disable redirect scan
                         HttpURLConnection.setFollowRedirects(false);
 
-                        //Define http connection
+                        // define http connection
                         HttpURLConnection con = (HttpURLConnection) new URL(url + "/" + line).openConnection();
 
-                        //Set User-agent
+                        // set User-agent
                         //con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
                         con.setRequestProperty("User-Agent", "https://becvold.xyz site scanner bot");
 
-                        //Set connection method
+                        // set connection method
                         con.setRequestMethod("HEAD");
 
-                        //Set maximal connection timetou 5000 = 5 second
+                        // set maximal connection timetou 5000 = 5 second
                         con.setConnectTimeout(5000);
 
-                        //Connect to define connection
+                        // connect to define connection
                         con.connect();
 
-                        //Print path and code to console
+                        // print path and code to console
                         if (con.getResponseCode() == 200 || con.getResponseCode() == 202 || con.getResponseCode() == 201) {
                             Logger.log(ConsoleColors.CODES.ANSI_GREEN + file + ":" + url + "/" + line + " -> " + new String(String.valueOf(con.getResponseCode())));
                         } else if (con.getResponseCode() == 301 || con.getResponseCode() == 302 || con.getResponseCode() == 303 || con.getResponseCode() == 304 || con.getResponseCode() == 305 || con.getResponseCode() == 308 || con.getResponseCode() == 307) {
@@ -137,26 +138,26 @@ public class SiteScanner {
                         } else {
                             Logger.log(file + ":" + url + "/" + line + " code: " + new String(String.valueOf(con.getResponseCode())));
                         }
-                        //End of path print
+                        // end of path print
 
-                        //File count + 1
+                        // file count + 1
                         file++;
 
-                        //Save to log file if response code not 404, 403, 400
+                        // save to log file if response code not 404, 403, 400
                         if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301 && con.getResponseCode() != 302 && con.getResponseCode() != 308 && con.getResponseCode() != 301 && con.getResponseCode() != 429) {
 
-                            //Found dirs + 1
+                            // found dirs + 1
                             foundDirs++;
 
-                            //Save found to log
+                            // save found to log
                             fileUtils.saveMessageLog(url + "/" + line + " - " + new String(String.valueOf(con.getResponseCode())), "scanned_logs/" + validator.urlStrip(url) + ".log");
                         }
                     } catch (Exception e) {
 
-                        //Print error for try catch
+                        // print error for try catch
                         Logger.log(ConsoleColors.CODES.ANSI_RED + file + ":" + "connection error: " + e.getMessage());
 
-                        //File count + 1
+                        // file count + 1
                         file++;
                     }
                 }
@@ -169,56 +170,56 @@ public class SiteScanner {
         }
     }
 
-    //Scan page subdomain
+    // scan page subdomain
     public void subdomainScan(String url) {
 
         int file = 1;
 
-        //init basic protocol
+        // init basic protocol
         String protocol = "http://";
 
-        //Get url and remmove /
+        // get url and remmove /
         url = validator.removeLastSlash(url);
 
-        //Check if subdomain.list file exist
+        // check if subdomain.list file exist
         if (fileUtils.ifFileExist("subdomain.list")) {
             try (BufferedReader br = new BufferedReader(new FileReader("subdomain.list"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     try {
 
-                        //Remove protocols from urls
+                        // remove protocols from urls
                         if (url.startsWith("https://")) {
                             url = url.replace("https://", "");
                         } else {
                             url = url.replace("http://", "");
                         }
 
-                        //Set valid
+                        // set valid
                         if (validator.isHttpOrHttpsUrl("https://" + url)) {
                             protocol = "https://";
                         }
 
-                        //Disable redirect scann
+                        // disable redirect scann
                         HttpURLConnection.setFollowRedirects(false);
 
-                        //Define http connection
+                        // define http connection
                         HttpURLConnection con = (HttpURLConnection) new URL(protocol + line + "." + url).openConnection();
 
-                        //Set User-agent
+                        // set User-agent
                         //con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36");
                         con.setRequestProperty("User-Agent", "https://becvold.xyz site scanner bot");
 
-                        //Set request method
+                        // set request method
                         con.setRequestMethod("HEAD");
 
-                        //Set maximal connection timetou 2000 = 2 seconds
+                        // set maximal connection timetou 2000 = 2 seconds
                         con.setConnectTimeout(2000);
 
-                        //Connect to connection define
+                        // connect to connection define
                         con.connect();
 
-                        //Print urů and code to console
+                        // print urů and code to console
                         if (con.getResponseCode() == 200 || con.getResponseCode() == 202 || con.getResponseCode() == 201) {
                             Logger.log(ConsoleColors.CODES.ANSI_GREEN + file + ":" + protocol + line + "." + url + " -> " + new String(String.valueOf(con.getResponseCode())));
                         } else if (con.getResponseCode() == 301 || con.getResponseCode() == 302 || con.getResponseCode() == 303 || con.getResponseCode() == 304 || con.getResponseCode() == 305 || con.getResponseCode() == 308 || con.getResponseCode() == 307) {
@@ -230,26 +231,26 @@ public class SiteScanner {
                         } else {
                             Logger.log(file + ":" + protocol + line + "." + url + " -> " + new String(String.valueOf(con.getResponseCode())));
                         }
-                        //End of path print
+                        // end of path print
 
-                        //file count +1
+                        // file count +1
                         file++;
 
-                        //Save to log file if response code not 404, 403, 400
+                        // save to log file if response code not 404, 403, 400
                         if (con.getResponseCode() != 404 && con.getResponseCode() != 400 && con.getResponseCode() != 403 && con.getResponseCode() != 301 && con.getResponseCode() != 302 && con.getResponseCode() != 308 && con.getResponseCode() != 301 && con.getResponseCode() != 429) {
 
-                            //Found subdomain + 1
+                            // found subdomain + 1
                             foundSubs++;
 
-                            //Save found to log file
+                            // save found to log file
                             fileUtils.saveMessageLog(protocol + line + "." + url + " - " + new String(String.valueOf(con.getResponseCode())), "scanned_logs/" + validator.urlStrip(url) + ".log");
                         }
                     } catch (Exception e) {
 
-                        //Print not found to console
+                        // print not found to console
                         Logger.log(ConsoleColors.CODES.ANSI_RED + file + ":" + e.getMessage() + " -> subdomain not found");
 
-                        //File count + 1
+                        // file count + 1
                         file++;
                     }
                 }
@@ -257,20 +258,20 @@ public class SiteScanner {
                 Logger.log(e.getMessage());
             }
 
-            //Print final found count
+            // print final found count
             Logger.log("Scanner: exited with " + foundDirs + " found files & " + foundSubs + " subdomains");
 
         } else {
 
-            //Print error if subdomain wordlist not found
+            // print error if subdomain wordlist not found
             SystemUtil.kill("error subdomain.list not found, please check your file or try reinstall this app");
         }
     }
 
-    //Final save scanned
+    // final save scanned
     public void finalSave(String url) {
 
-        //Check if found is not fakes
+        // check if found is not fakes
         if (Main.useSiteList.equalsIgnoreCase("yes") || Main.useSiteList.isEmpty()) {
             if (foundDirs > Main.MAX_FOUND || foundSubs > Main.MAX_FOUND || (foundDirs == 0 & foundSubs == 0)) {
                 Logger.log("Scanner: the scanned data will not be saved.");

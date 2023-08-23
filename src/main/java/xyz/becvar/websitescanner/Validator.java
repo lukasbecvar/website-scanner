@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class Validator {
 
-    //Function for check if url is valid adress
+    // function for check if url is valid adress
     public boolean isURL(String url) {
         try {
             (new java.net.URL(url)).openStream().close();
@@ -14,21 +14,21 @@ public class Validator {
         return false;
     }
 
-    //Function for strip url
+    // function for strip url
     public String urlStrip(String url) {
-        //Remove protocol form url
+        // remove protocol form url
         url = url.replace("https://", "").replace("http://", "");
 
-        //Remove last char /
+        // remove last char /
         url = removeLastSlash(url);
 
         return url;
     }
 
 
-    //Function for remove last /
+    // function for remove last /
     public String removeLastSlash(String url) {
-        //Remove last char /
+        // remove last char /
         if (url.endsWith("/")) {
             return url.substring(0, url.length() - 1);
         } else {
@@ -36,7 +36,7 @@ public class Validator {
         }
     }
 
-    //Check if site is https
+    // check if site is https
     public boolean isHttpOrHttpsUrl(String url) {
 
         try {
