@@ -273,7 +273,7 @@ public class SiteScanner {
 
         // check if found is not fakes
         if (Main.useSiteList.equalsIgnoreCase("yes") || Main.useSiteList.isEmpty()) {
-            if (foundDirs > Main.MAX_FOUND || foundSubs > Main.MAX_FOUND || (foundDirs == 0 & foundSubs == 0)) {
+            if ((foundDirs > Main.MAX_FOUND || foundSubs > Main.MAX_FOUND) || (foundDirs == 0 && foundSubs == 0)) {
                 Logger.log("Scanner: the scanned data will not be saved.");
                 fileUtils.deleteFile("scanned_logs/" + validator.urlStrip(url) + ".log");
             } else {
@@ -282,5 +282,8 @@ public class SiteScanner {
         } else {
             Logger.log("Scanner: the scanned data saved to scanned_logs/" + "scanned_logs/" + validator.urlStrip(url) + ".log");
         }
+
+        foundSubs = 0;
+        foundDirs = 0;
     }
 }
